@@ -23,8 +23,10 @@ class SP_FB {
 
 	public function __construct() {
 
+		$this->ver = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? time() : get_bloginfo( 'version' );
 		$this->paths();
 		add_action( 'wp_enqueue_scripts', [ $this, 'assets' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_assets' ] );
 		spl_autoload_register( [ $this, 'autoload' ] );
 		$this->includeClasses();
 
@@ -39,8 +41,6 @@ class SP_FB {
 
 	public function assets() {
 
-		$this->ver = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? time() : get_bloginfo( 'version' );
-
 		// Style 
 
 		wp_enqueue_style( 'sp-fb-style', SP_FB_URL . '/assets/css/style.css', [], $this->ver, 'all' );
@@ -53,6 +53,18 @@ class SP_FB {
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'woo_ajax_nonce' ),
         ));
+
+	}
+
+	public function admin_assets() {
+
+		// Style 
+
+		wp_enqueue_style( 'sp-fb-admin-style', SP_FB_URL . '/assets/admin/css/style.css', [], $this->ver, 'all' );
+
+		// Script
+
+		wp_enqueue_script( 'sp-fb-admin-script', SP_FB_URL . '/assets/admin/js/script.js', ['jquery'], $this->ver, true );
 
 	}
 
