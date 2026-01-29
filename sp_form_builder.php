@@ -25,6 +25,8 @@ class SP_FB {
 
 		$this->ver = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? time() : get_bloginfo( 'version' );
 		$this->paths();
+		// $this->activation();
+		register_activation_hook( __FILE__, [ $this, 'activation' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'assets' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_assets' ] );
 		spl_autoload_register( [ $this, 'autoload' ] );
@@ -36,6 +38,40 @@ class SP_FB {
 
 		defined( 'SP_FB_PATH' ) || define( 'SP_FB_PATH', plugin_dir_path(__FILE__) );
 		defined( 'SP_FB_URL' ) || define( 'SP_FB_URL', plugin_dir_url(__FILE__) );
+
+	}
+
+	public function activation() {
+
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . "sp_form";
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$created_table_query = "CREATE TABLE $table_name (
+			id INT NOT NULL AUTO_INCREMENT, 
+			name VARCHAR(50) NOT NULL, 
+			content LONGTEXT NOT NULL, 
+			created_date TIMESTAMP NOT NULL, 
+			updated_date TIMESTAMP NOT NULL, 
+			shortcode VARCHAR(50) NOT NULL, 
+			PRIMARY KEY (id)
+		) $charset_collate;";
+
+		// $created_table_query = "CREATE TABLE $table_name (
+		// 	id mediumint(9) NOT NULL AUTO_INCREMENT,
+		// 	name varchar(55) NOT Null,
+		// 	email varchar(100) NOT Null,
+		// 	phone varchar(55) NOT NUll,
+		// 	religious varchar(55) NOT NULL,
+		// 	gender varchar(55) NOT NULL,
+		// 	message text NOT Null,
+		// 	PRIMARY KEY (id)
+		// ) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		dbDelta( $created_table_query );
 
 	}
 

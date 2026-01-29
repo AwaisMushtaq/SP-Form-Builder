@@ -14,15 +14,17 @@ jQuery(document).ready(function($){
 	      const fieldType = ui.draggable.data('type');
 
 	      let fieldHTML = generateField(fieldType);
+        let fieldOptionsHTML = fieldOptions();
 
 	      $('#sp-form-canvas .placeholder').remove();
 	      $('#sp-form-canvas').append(fieldHTML);
+        $('#sp-form-canvas .form-field:last').append(fieldOptionsHTML);
 	   }
 	})
 
 })
 
-function generateField(type) {
+const generateField = (type) => {
 
   let html = '';
 
@@ -56,4 +58,13 @@ function generateField(type) {
   }
 
   return html;
+}
+
+const fieldOptions = () => {
+  let html = `
+    <div class="field-options">
+      <button> Edit </button>
+      <button> Delete </button>
+    </div>`;
+  return html;  
 }

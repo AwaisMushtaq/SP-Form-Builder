@@ -19,7 +19,7 @@
 					<img width="48" height="48" src="<?php echo SP_FB_URL ?>/assets/admin/img/tray-fields/text.png" alt="text-field" />
 					<span> <?php echo esc_html__( 'Text', 'sp-fb' ) ?> </span>
 				</div>
-				<div class="sp-field-item">
+				<div class="sp-field-item" data-type="email">
 					<img width="48" height="48" src="<?php echo SP_FB_URL ?>/assets/admin/img/tray-fields/mail.png" alt="text-field" />
 					<span> <?php echo esc_html__( 'Email', 'sp-fb' ) ?> </span>
 				</div>
